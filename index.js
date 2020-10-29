@@ -1,5 +1,7 @@
 const express = require('express')
 // import express
+const morgan = require('morgan')
+// import morgan
 
 const postRouter = require('./posts/postRouter')
 const userRouter = require('./users/userRouter')
@@ -10,6 +12,7 @@ const server = express()
 
 server.use(express.json())
 // use a json parsing every time request we get
+server.use(morgan('dev'))
 server.use(logger)
 server.use('/api/posts', postRouter)
 server.use('/api/users', userRouter)
@@ -18,7 +21,8 @@ server.use('/api/users', userRouter)
 //custom middleware
 
 function logger(req, res, next) {
-   console.log('method: ', req.method, 'url: ', req.url, 'timestamp: ', new Date().valueOf())
+   console.log(req.method, req.url, new Date(new Date().toUTCString().slice(0, -3)))
+   morgan('dev')
    next()
 }
 
